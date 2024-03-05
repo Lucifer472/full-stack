@@ -1,0 +1,30 @@
+# Backend Ignore Files
+backend/node_modules
+# Keep environment variables out of version control
+backend/.env
+
+# Fronted Ignore Files
+# Logs
+fronted/logs
+fronted/*.log
+fronted/npm-debug.log*
+fronted/yarn-debug.log*
+fronted/yarn-error.log*
+fronted/pnpm-debug.log*
+fronted/lerna-debug.log*
+
+fronted/node_modules
+fronted/dist
+fronted/dist-ssr
+fronted/*.local
+
+# Editor directories and files
+fronted/.vscode/*
+fronted/!.vscode/extensions.json
+fronted/.idea
+fronted/.DS_Store
+fronted/*.suo
+fronted/*.ntvs*
+fronted/*.njsproj
+fronted/*.sln
+fronted/*.sw?
