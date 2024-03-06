@@ -2,6 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
+// Routes Import
+import uploadRoutes from "./routes/upload/route";
+
 // DOT ENV CONFIG
 dotenv.config();
 
@@ -16,6 +19,9 @@ app.use(express.json());
 app.use(cors(corsOptions));
 
 // Routes
+
+app.use("/api/upload", uploadRoutes); // Use the routes for Uploading
+app.use("/api/fetch") // Use the Route for Fetching
 
 // RUNNING APP
 app.listen(PORT, () => {

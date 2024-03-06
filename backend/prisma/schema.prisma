@@ -13,16 +13,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Sheets{
+  id    Int   @id     @default(autoincrement())
+  sheetName   String
+  employee Employee[]
+}
+
 // Emplyees Data Modal
 model Employee {
-  id             String   @id       @default(cuid())
-  fields       EmployeeCustomField[]
+  id             Int   @id       @default(autoincrement())
+  fields         EmployeeCustomField[]
+
+  sheetsId  Int     
+  sheets    Sheets    @relation(fields: [sheetsId],references: [id],onDelete:  Cascade)
 }
 
 model EmployeeCustomField {
-  id         String      @id @default(cuid())
+  id         Int      @id @default(autoincrement())
   key        String  
   value      String   
-  employeeId String 
+  employeeId Int 
   employee   Employee @relation(fields: [employeeId], references: [id],onDelete: Cascade)
 }
