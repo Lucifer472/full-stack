@@ -1,0 +1,33 @@
+import { Suspense } from "react";
+import { Outlet, Navigate, useRoutes } from "react-router-dom";
+
+import DashboardLayout from "@/layout/DashboardLayout";
+import IndexPage from "@/pages/IndexPage";
+import PageNotFound from "@/pages/PageNotFound";
+
+const Router = () => {
+  const routes = useRoutes([
+    {
+      element: (
+        <DashboardLayout>
+          <Suspense>
+            <Outlet />
+          </Suspense>
+        </DashboardLayout>
+      ),
+      children: [{ element: <IndexPage />, index: true }],
+    },
+    {
+      path: "404",
+      element: <PageNotFound />,
+    },
+    {
+      path: "*",
+      element: <Navigate to="/404" replace />,
+    },
+  ]);
+
+  return routes;
+};
+
+export default Router;

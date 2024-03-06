@@ -28,3 +28,5 @@ fronted/*.ntvs*
 fronted/*.njsproj
 fronted/*.sln
 fronted/*.sw?
+
+.vscode

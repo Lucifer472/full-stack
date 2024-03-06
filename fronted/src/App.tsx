@@ -1,5 +1,14 @@
+import Router from "@/routes/Sections";
+import { BrowserRouter } from "react-router-dom";
+
+import "@/global.css";
+
 function App() {
-  return <div className="text-2xl bg-red-300">hello world</div>;
+  return (
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
+  );
 }
 
 export default App;
