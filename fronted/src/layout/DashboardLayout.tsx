@@ -1,11 +1,7 @@
 import Box from "@mui/material/Box";
 import Main from "@/layout/Main";
-
-// import Nav from "./nav";
-// import Main from "./main";
-// import Header from "./header";
-
-// ----------------------------------------------------------------------
+import Sidebar from "@/layout/Sidebar";
+import Header from "@/layout/Header";
 
 export default function DashboardLayout({
   children,
@@ -14,15 +10,15 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      {/* <Header onOpenNav={() => setOpenNav(true)} /> */}
+      <Header />
 
       <Box
         sx={{
           minHeight: 1,
           display: "flex",
-          flexDirection: { xs: "column", lg: "row" },
         }}
       >
+        <Sidebar />
         <Main>{children}</Main>
       </Box>
     </>

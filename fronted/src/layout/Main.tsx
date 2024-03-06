@@ -10,6 +10,7 @@ const Main = ({ children, ...other }: { children: React.ReactNode }) => {
         display: "flex",
         flexDirection: "column",
         py: `10px`,
+        position: "relatives",
       }}
       {...other}
     >
