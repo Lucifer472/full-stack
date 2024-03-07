@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { updateCustomField } from "../../../lib/sheets";
+import { updateRows } from "../../../lib/sheets";
 
 /**
  * @param req fieldId and ChangedValue for Updating Data
@@ -16,7 +16,7 @@ export const updateFieldByEmployeeId = async (req: Request, res: Response) => {
     return res.status(400).json({ error: "Invalid Sheet ID" });
   }
 
-  const isUpdated = await updateCustomField(fieldId, changedValue);
+  const isUpdated = await updateRows(fieldId, changedValue);
 
   if (isUpdated.success) {
     return res.status(200).json({ success: isUpdated.success });

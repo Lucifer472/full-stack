@@ -18,11 +18,12 @@ export const createSheets = async (name: string) => {
   }
 };
 
-// Employee Functions
-export const createEmployee = async (sheetsId: number) => {
+// Header Functions
+export const createHeader = async (sheetsId: number, headerData: object) => {
   try {
-    const data = await db.employee.create({
+    const data = await db.header.create({
       data: {
+        headerData,
         sheetsId,
       },
     });
@@ -34,21 +35,14 @@ export const createEmployee = async (sheetsId: number) => {
   }
 };
 
-export const addFields = async (
-  keys: string[],
-  values: string[],
-  employeeId: number
-) => {
+export const addFields = async (values: object[], headerId: number) => {
   try {
-    const fieldsData = keys.map((key, index) => ({
-      key: key.toString(),
-      value: values[index].toString(),
-      employeeId,
+    const fieldsData = values.map((v) => ({
+      values: v,
+      headerId,
     }));
 
-    console.log(fieldsData);
-
-    const data = await db.employeeCustomField.createMany({
+    const data = await db.rows.createMany({
       data: fieldsData,
     });
 
@@ -75,31 +69,14 @@ export const fetchSheets = async () => {
   }
 };
 
-export const fetchAllEmployees = async (sheetsId: number) => {
+export const fetchAllData = async (sheetsId: number) => {
   try {
-    const data = await db.employee.findMany({
+    const data = await db.header.findMany({
       where: {
         sheetsId,
       },
-    });
-
-    if (!data) return { error: null };
-    return { success: data };
-  } catch (error) {
-    return { error: null };
-  }
-};
-
-export const fetchFieldsFromEmployee = async (employeeId: number) => {
-  try {
-    const data = await db.employeeCustomField.findMany({
-      where: {
-        employeeId,
-      },
-      select: {
-        id: true,
-        key: true,
-        value: true,
+      include: {
+        rows: true,
       },
     });
 
@@ -124,9 +101,9 @@ export const deleteSheet = async (id: number) => {
   }
 };
 
-export const deleteEmployee = async (id: number) => {
+export const deleteRows = async (id: number) => {
   try {
-    await db.employee.delete({
+    await db.rows.delete({
       where: {
         id,
       },
@@ -155,14 +132,14 @@ export const updateNameSheet = async (id: number, name: string) => {
   }
 };
 
-export const updateCustomField = async (id: number, value: string) => {
+export const updateRows = async (id: number, values: string) => {
   try {
-    await db.employeeCustomField.update({
+    await db.rows.update({
       where: {
         id,
       },
       data: {
-        value,
+        values,
       },
     });
 

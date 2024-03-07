@@ -13,25 +13,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Sheet
 model Sheets{
   id    Int   @id     @default(autoincrement())
   sheetName   String
-  employee Employee[]
+  header Header[]
 }
 
-// Emplyees Data Modal
-model Employee {
+// Header of the Sheet
+model Header {
   id             Int   @id       @default(autoincrement())
-  fields         EmployeeCustomField[]
+  rows           Rows[]
 
-  sheetsId  Int     
-  sheets    Sheets    @relation(fields: [sheetsId],references: [id],onDelete:  Cascade)
+  headerData     Json
+  sheetsId       Int     
+  sheets         Sheets    @relation(fields: [sheetsId],references: [id],onDelete:  Cascade)
 }
 
-model EmployeeCustomField {
+// Rows of The Shhet
+model Rows {
   id         Int      @id @default(autoincrement())
-  key        String  
-  value      String   
-  employeeId Int 
-  employee   Employee @relation(fields: [employeeId], references: [id],onDelete: Cascade)
+  values     Json
+  headerId   Int 
+  header     Header @relation(fields: [headerId], references: [id],onDelete: Cascade)
 }

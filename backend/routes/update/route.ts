@@ -1,7 +1,7 @@
 import express from "express";
 
 import { updateSheetNameById } from "./functions/name-update-sheet";
-import { updateFieldByEmployeeId } from "./functions/field-update-employee";
+import { updateFieldByEmployeeId } from "./functions/field-update-rows";
 
 const router = express.Router();
 
@@ -11,9 +11,9 @@ router.put(
   async (req, res) => await updateSheetNameById(req, res)
 );
 
-// This is Custom Field Update Route
+// This is Rows Update Route
 router.put(
-  "/employee/:fieldId",
+  "/rows/:fieldId",
   async (req, res) => await updateFieldByEmployeeId(req, res)
 );
 

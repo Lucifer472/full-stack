@@ -1,7 +1,7 @@
 import express from "express";
 
 import { deleteSheetById } from "./functions/delete-sheets";
-import { deleteEmployeeById } from "./functions/delete-employee";
+import { deleteRowsById } from "./functions/delete-rows";
 
 const router = express.Router();
 
@@ -11,10 +11,10 @@ router.delete(
   async (req, res) => await deleteSheetById(req, res)
 );
 
-// This Deletes the employee using EmployeeId
+// This Deletes the Row using rowId
 router.delete(
-  "/employee/:employeeId",
-  async (req, res) => await deleteEmployeeById(req, res)
+  "/rows/:rowId",
+  async (req, res) => await deleteRowsById(req, res)
 );
 
 export default router;

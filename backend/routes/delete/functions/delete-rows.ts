@@ -1,20 +1,20 @@
 import { Request, Response } from "express";
-import { deleteEmployee } from "../../../lib/sheets";
+import { deleteRows } from "../../../lib/sheets";
 
 /**
- * @param req employeeId Field
+ * @param req rowId Field
  * @param res Success Message or Error Message.
  * @returns
- * This Function Deletes Employees From Database.
+ * This Function Deletes Rows From Database.
  */
-export const deleteEmployeeById = async (req: Request, res: Response) => {
-  const employeeId = parseInt(req.params.employeeId);
+export const deleteRowsById = async (req: Request, res: Response) => {
+  const rowId = parseInt(req.params.rowId);
 
-  if (isNaN(employeeId)) {
+  if (isNaN(rowId)) {
     return res.status(400).json({ error: "Invalid Sheet ID" });
   }
 
-  const isDeleted = await deleteEmployee(employeeId);
+  const isDeleted = await deleteRows(rowId);
 
   if (isDeleted.success) {
     return res.status(200).json({ success: isDeleted.success });
