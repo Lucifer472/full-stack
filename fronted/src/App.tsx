@@ -3,11 +3,15 @@ import { BrowserRouter } from "react-router-dom";
 import Router from "@/routes/Sections";
 
 import "@/global.css";
+import ThemeProvider from "./theme";
+
 function App() {
   return (
     <BrowserRouter>
       <Toaster position="top-center" />
-      <Router />
+      <ThemeProvider>
+        <Router />
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

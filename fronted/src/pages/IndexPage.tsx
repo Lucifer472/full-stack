@@ -1,4 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { Circle, FileUpload } from "@mui/icons-material";
 import {
   Box,
@@ -10,14 +12,16 @@ import {
   Typography,
 } from "@mui/material";
 
-import { UploadNotes } from "@/constant";
+import { UploadNotes, apiUrl } from "@/constant";
+
 import Loader from "@/layout/Loader";
-import toast from "react-hot-toast";
+import PageTitle from "@/components/PageTitle";
 
 const IndexPage = () => {
   const fileInputRef = useRef(null);
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Temp State Only Development
   const [temp, setTemp] = useState(true);
@@ -36,7 +40,7 @@ const IndexPage = () => {
         const formData = new FormData();
         formData.append("file", file);
         setLoading(true);
-        fetch("http://localhost:8800/api/upload/sheet", {
+        fetch(apiUrl + "/upload/sheet", {
           method: "POST",
           body: formData,
         }).then((res) => {
@@ -44,6 +48,9 @@ const IndexPage = () => {
             toast.success("File Uploaded Successfully");
             setLoading(false);
             setTemp(false);
+            res.json().then((res) => {
+              navigate("/sheets/" + res.sheetId);
+            });
           } else {
             toast.error("Something Went Wrong!");
             setLoading(false);
@@ -74,14 +81,10 @@ const IndexPage = () => {
   };
 
   return (
-    <section className="global-container w-full">
+    <section className="global-container">
       {loading && <Loader />}
       <div className="flex flex-col gap-y-4 w-full">
-        <div className="w-full bg-white flex items-start justify-start px-4 py-6 rounded-md shadow border border-slate-100">
-          <h2 className="text-lg text-gray-800 font-semibold">
-            Employee Data Upload (.xlsx and .csv)
-          </h2>
-        </div>
+        <PageTitle title="Employee Data Upload (.xlsx and .csv)" />
         <div className="w-full bg-white p-4 rounded-md shadow border border-slate-100">
           <input
             ref={fileInputRef}

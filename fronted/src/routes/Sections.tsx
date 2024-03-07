@@ -2,8 +2,11 @@ import { Suspense } from "react";
 import { Outlet, Navigate, useRoutes } from "react-router-dom";
 
 import DashboardLayout from "@/layout/DashboardLayout";
+
 import IndexPage from "@/pages/IndexPage";
 import PageNotFound from "@/pages/PageNotFound";
+import TablesView from "@/pages/Tables";
+import SheetPage from "@/pages/SheetPage";
 
 const Router = () => {
   const routes = useRoutes([
@@ -15,7 +18,17 @@ const Router = () => {
           </Suspense>
         </DashboardLayout>
       ),
-      children: [{ element: <IndexPage />, index: true }],
+      children: [
+        { element: <IndexPage />, index: true },
+        {
+          path: "/sheets",
+          element: <SheetPage />,
+        },
+        {
+          path: "/sheets/:sheetId",
+          element: <TablesView />,
+        },
+      ],
     },
     {
       path: "404",

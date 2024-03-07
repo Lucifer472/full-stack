@@ -48,7 +48,9 @@ export const createSheetsAndEmployee = async (req: Request, res: Response) => {
       const row = await addFields(rows, firstRow.success.id);
 
       if (row.success) {
-        return res.status(200).json({ success: "Sheet Created Successfully!" });
+        return res
+          .status(200)
+          .json({ success: "Sheet Created Successfully!", sheetId: sheetId });
       }
       return res.status(400).json({ error: "Something Went Wrong!" });
     }

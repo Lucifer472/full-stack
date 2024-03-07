@@ -13,7 +13,7 @@ router.put(
 
 // This is Rows Update Route
 router.put(
-  "/rows/:fieldId",
+  "/row/:fieldId",
   async (req, res) => await updateFieldByEmployeeId(req, res)
 );
 

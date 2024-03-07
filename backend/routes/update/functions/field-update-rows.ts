@@ -9,7 +9,6 @@ import { updateRows } from "../../../lib/sheets";
  */
 export const updateFieldByEmployeeId = async (req: Request, res: Response) => {
   const fieldId = parseInt(req.params.fieldId);
-
   const { changedValue } = req.body;
 
   if (isNaN(fieldId)) {

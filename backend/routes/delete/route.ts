@@ -13,7 +13,7 @@ router.delete(
 
 // This Deletes the Row using rowId
 router.delete(
-  "/rows/:rowId",
+  "/row/:rowId",
   async (req, res) => await deleteRowsById(req, res)
 );
 

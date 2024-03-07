@@ -87,6 +87,21 @@ export const fetchAllData = async (sheetsId: number) => {
   }
 };
 
+export const fetchRow = async (id: number) => {
+  try {
+    const data = await db.rows.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!data) return { error: null };
+    return { success: data };
+  } catch (error) {
+    return { error: null };
+  }
+};
+
 // Delete Functions for Sheets & Employee
 export const deleteSheet = async (id: number) => {
   try {

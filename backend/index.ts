@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 8800;
 
 app.use(express.json());
 app.use(cors(corsOptions));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Routes
 app.use("/api/upload", uploadRoutes); // Use the routes for Uploading

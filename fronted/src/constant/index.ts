@@ -1,5 +1,7 @@
-// Upload Notes
+// Api Route URL
+export const apiUrl = "http://localhost:8800/api";
 
+// Upload Notes
 export const UploadNotes = [
   "This upload only supports valid Excel or Google Sheets files in .xlsx or .csv format.",
   "The first row must be a header row with titles for each column to serve as data indicators.",
