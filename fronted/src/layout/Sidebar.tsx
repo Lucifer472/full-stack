@@ -21,9 +21,6 @@ interface ListItemProp {
 
 const ListItem = ({ paths, title, icon: Icon }: ListItemProp) => {
   const location = useLocation();
-
-  console.log(location.pathname);
-
   return (
     <ListItemButton
       component={RouterLink}
