@@ -17,25 +17,36 @@ const CreateChart = ({ id, headerData }: CreateChartProps) => {
 
     // @ts-expect-error elements
     const formElements = e.target.elements;
-    const formValues = [];
+    // @ts-expect-error formValues
+    const formValues: {
+      field: string;
+      chartName: string;
+      chartType: string;
+    } = {};
 
     // Loop through form elements and store their values in formValues object
     for (let i = 0; i < formElements.length; i++) {
       const element = formElements[i];
       if (element.name) {
-        formValues.push(element.value);
+        // @ts-expect-error FormValue
+        formValues[element.name] = element.value;
       }
     }
 
     if (id) {
       setIsLoading(true);
 
-      fetch(apiUrl + "/create/row/" + id, {
+      fetch(apiUrl + "/create/chart", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ row: formValues }),
+        body: JSON.stringify({
+          headerId: id,
+          field: formValues["field"],
+          chartType: formValues["chartType"],
+          chartName: formValues["chartName"],
+        }),
       }).then((res) =>
         res.json().then((r) => {
           if (r.success) {
@@ -93,7 +104,6 @@ const CreateChart = ({ id, headerData }: CreateChartProps) => {
               <MenuItem value={"bar"}>Bar Chart</MenuItem>
               <MenuItem value={"line"}>Line Chart</MenuItem>
               <MenuItem value={"pie"}>Pie Chart</MenuItem>
-              <MenuItem value={"scatter"}>Scatter Chart</MenuItem>
               <MenuItem value={"sparkline"}>Sparkline Chart</MenuItem>
             </Select>
           </div>

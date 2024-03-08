@@ -1,3 +1,4 @@
+import ChartView from "@/components/ChartView";
 import CreateRow from "@/components/CreateRow";
 import CreateSheet from "@/components/CreateSheet";
 import DataTables from "@/components/DataTables";
@@ -74,8 +75,6 @@ const TablesView = () => {
       }))
     : [];
 
-  console.log(data);
-
   return (
     <section className="global-container">
       {editColumns && (
@@ -97,7 +96,7 @@ const TablesView = () => {
           title="Employee Sheet Data Editor"
           blocks={
             <TableButtons
-              sheetId={id ? id : undefined}
+              headerId={data?.id}
               change={change}
               setChange={setChange}
               headerValue={data ? data.headerData : []}
@@ -116,6 +115,7 @@ const TablesView = () => {
           </div>
         </div>
       </div>
+      <ChartView id={data?.id} />
     </section>
   );
 };

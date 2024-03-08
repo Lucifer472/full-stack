@@ -12,14 +12,14 @@ interface TableButtonsProps {
   change: number;
   setChange: (v: number) => void;
   headerValue: string[];
-  sheetId: number | undefined;
+  headerId: number | undefined;
 }
 
 const TableButtons = ({
   change,
   setChange,
   headerValue,
-  sheetId,
+  headerId,
 }: TableButtonsProps) => {
   const rows = useSelector((state: RootState) => state.rowSelect.row);
   const [loading, setLoading] = useState(false);
@@ -58,7 +58,7 @@ const TableButtons = ({
       )}
       {chart && (
         <Popup setOpen={setChart} title="Create A Chart">
-          <CreateChart id={sheetId} headerData={headerValue} />
+          <CreateChart id={headerId} headerData={headerValue} />
         </Popup>
       )}
       <Button
