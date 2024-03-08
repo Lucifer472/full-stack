@@ -4,34 +4,30 @@ import Popup from "@/layout/Popup";
 import { RootState } from "@/state/store";
 import { Button } from "@mui/material";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EditRow from "./EditRow";
 import CreateChart from "./CreateChart";
+import { setTable } from "@/state/slices/TableSlice";
+import toast from "react-hot-toast";
 
-interface TableButtonsProps {
-  change: number;
-  setChange: (v: number) => void;
-  headerValue: string[];
-  headerId: number | undefined;
-}
-
-const TableButtons = ({
-  change,
-  setChange,
-  headerValue,
-  headerId,
-}: TableButtonsProps) => {
+const TableButtons = () => {
   const rows = useSelector((state: RootState) => state.rowSelect.row);
+  const data = useSelector((state: RootState) => state.table.data);
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(false);
   const [chart, setChart] = useState(false);
+
+  if (!data) {
+    return;
+  }
 
   const handleRowDelete = async () => {
     if (rows && rows.length > 0) {
       setLoading(true);
 
       try {
-        // Use Promise.all to wait for all delete operations to complete
         await Promise.all(
           rows.map(async (r) => {
             await fetch(apiUrl + "/delete/row/" + r, {
@@ -40,10 +36,13 @@ const TableButtons = ({
           })
         );
       } catch (error) {
-        console.error("Error deleting rows:", error);
+        toast.error("Something went Wrong!");
       } finally {
-        setChange(change + 1);
+        const dummyData = { ...data };
+        dummyData.rows = dummyData.rows.filter((row) => !rows.includes(row.id));
+        dispatch(setTable(dummyData));
         setLoading(false);
+        toast.success("Deleted Successfully!");
       }
     }
   };
@@ -53,12 +52,12 @@ const TableButtons = ({
       {loading && <Loader />}
       {edit && (
         <Popup setOpen={setEdit} title="Row Editor">
-          <EditRow headerValue={headerValue} />
+          <EditRow />
         </Popup>
       )}
       {chart && (
         <Popup setOpen={setChart} title="Create A Chart">
-          <CreateChart id={headerId} headerData={headerValue} />
+          <CreateChart />
         </Popup>
       )}
       <Button

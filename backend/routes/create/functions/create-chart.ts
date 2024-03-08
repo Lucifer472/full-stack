@@ -17,7 +17,7 @@ export const createChartWithId = async (req: Request, res: Response) => {
     if (row.success) {
       const data: any = [];
 
-      row.success[0].rows.forEach((r: any) => {
+      row.success.rows.forEach((r: any) => {
         data.push(r.values[headerIndex]);
       });
 
@@ -31,7 +31,7 @@ export const createChartWithId = async (req: Request, res: Response) => {
       );
 
       if (newChart.success) {
-        return res.status(200).json({ success: true, id: newChart });
+        return res.status(200).json({ success: newChart.success });
       }
     }
   }

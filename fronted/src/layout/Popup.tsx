@@ -9,7 +9,7 @@ interface PopupProps {
 const Popup = ({ children, setOpen, title }: PopupProps) => {
   return (
     <>
-      <div className="min-w-[400px] max-w-[700px] overflow-hidden max-h-[700px] min-h-[200px] bg-white rounded-lg border border-slate-100 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col w-fit px-4 py-2 z-20">
+      <div className="min-w-[400px] max-w-[700px] overflow-hidden max-h-[400px] min-h-[200px] bg-white rounded-lg border border-slate-100 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col w-fit px-4 py-2 z-20">
         <div className="w-full flex items-center justify-between">
           <h2 className="text-xl font-semibold">{title}</h2>
           <button onClick={() => setOpen(false)}>

@@ -9,7 +9,7 @@ export const createSheetWithColumns = async (req: Request, res: Response) => {
     const header = await createHeader(sheet.success.id, columns);
 
     if (header.success) {
-      return res.status(200).json({ success: "Sheet has been Created!" });
+      return res.status(200).json({ success: sheet.success });
     }
 
     return res.status(500).json({ error: "Something Went Wrong!" });

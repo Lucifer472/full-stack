@@ -88,7 +88,7 @@ export const fetchSheets = async () => {
 
 export const fetchAllData = async (sheetsId: number) => {
   try {
-    const data = await db.header.findMany({
+    const data = await db.header.findFirst({
       where: {
         sheetsId,
       },

@@ -11,7 +11,7 @@ export const addRow = async (req: Request, res: Response) => {
   const rows = await addRows(headerId, row);
 
   if (rows.success) {
-    return res.status(200).json({ success: "Rows Updated!" });
+    return res.status(200).json({ success: rows.success });
   }
 
   return res.status(500).json({ error: "Something Went Wrong!" });

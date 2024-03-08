@@ -13,11 +13,8 @@ import { overrides } from "./overrides";
 import { typography } from "./typography";
 import { customShadows } from "./custom-shadows";
 
-export default function ThemeProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// @ts-expect-error Theme
+export default function ThemeProvider({ children }) {
   const memoizedValue = useMemo(
     () => ({
       palette: palette(),
@@ -28,10 +25,11 @@ export default function ThemeProvider({
     }),
     []
   );
-  // @ts-expect-error Pallet Error
+
+  // @ts-expect-error Theme
   const theme = createTheme(memoizedValue);
 
-  // @ts-expect-error Overrides
+  // @ts-expect-error Theme
   theme.components = overrides(theme);
 
   return (

@@ -4,10 +4,18 @@ import toast from "react-hot-toast";
 import { Button, TextField } from "@mui/material";
 
 import { apiUrl } from "@/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import { setSheetData } from "@/state/slices/SheetDataSlice";
 
-const SheetNameChange = ({ sheetId }: { sheetId: number }) => {
+const SheetNameChange = ({ sheetIndex }: { sheetIndex: number }) => {
+  const data = useSelector((state: RootState) => state.SheetData.data);
+  const dispatch = useDispatch();
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!data) return;
+
     // @ts-expect-error elements
     const formElements = e.target.elements;
 
@@ -16,7 +24,7 @@ const SheetNameChange = ({ sheetId }: { sheetId: number }) => {
       toast.error("Please Provide a Valid Sheet Name!");
     }
 
-    fetch(apiUrl + "/update/sheet/" + sheetId, {
+    fetch(apiUrl + "/update/sheet/" + data[sheetIndex].id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -24,7 +32,13 @@ const SheetNameChange = ({ sheetId }: { sheetId: number }) => {
       body: JSON.stringify({ sheetName }),
     }).then((res) => {
       if (res.status === 200) {
-        window.location.reload();
+        const dummyData = [...data];
+        dummyData[sheetIndex] = {
+          ...dummyData[sheetIndex],
+          sheetName: sheetName,
+        };
+        dispatch(setSheetData(dummyData));
+        toast.success("Rename Successfully");
       } else {
         toast.error("Something Went Wrong!");
       }

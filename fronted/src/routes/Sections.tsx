@@ -7,6 +7,7 @@ import IndexPage from "@/pages/IndexPage";
 import PageNotFound from "@/pages/PageNotFound";
 import TablesView from "@/pages/Tables";
 import SheetPage from "@/pages/SheetPage";
+import ChartsPage from "@/pages/ChartsPage";
 
 const Router = () => {
   const routes = useRoutes([
@@ -20,6 +21,10 @@ const Router = () => {
       ),
       children: [
         { element: <IndexPage />, index: true },
+        {
+          path: "/charts",
+          element: <ChartsPage />,
+        },
         {
           path: "/sheets",
           element: <SheetPage />,

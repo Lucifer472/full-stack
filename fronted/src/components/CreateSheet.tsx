@@ -5,46 +5,44 @@ import { Button, TextField } from "@mui/material";
 
 import Loader from "@/layout/Loader";
 import { apiUrl } from "@/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import { setSheetData } from "@/state/slices/SheetDataSlice";
+import { setTable } from "@/state/slices/TableSlice";
 
 interface CreateSheetProps {
   columnOnly?: boolean;
-  headerId?: number;
-  headerData?: string[];
 }
 
-const CreateSheet = ({
-  columnOnly,
-  headerData,
-  headerId,
-}: CreateSheetProps) => {
+const CreateSheet = ({ columnOnly }: CreateSheetProps) => {
   const [fields, setFields] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
+  const sheetData = useSelector((state: RootState) => state.SheetData.data);
+  const data = useSelector((state: RootState) => state.table.data);
+  const dispatch = useDispatch();
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setIsLoading(true);
 
     // @ts-expect-error elements
     const formElements = e.target.elements;
-    const formValues = [];
-    let SheetName = "New sheet";
+    const formValues: string[] = [];
 
-    if (headerData) {
-      headerData.forEach((h) => {
-        formValues.push(h);
+    if (data) {
+      data.headerData.forEach((h) => {
+        formValues.push(h as string);
       });
     }
 
     for (let i = 0; i < formElements.length; i++) {
-      const element = formElements[i];
+      const element: {
+        name: string;
+        value: string;
+      } = formElements[i];
       if (element.name) {
-        // @ts-expect-error Name Error Typescript
-        if (formValues.name !== "sheetNameMain") {
-          formValues.push(element.value);
-        } else {
-          SheetName = element.value;
-        }
+        formValues.push(element.value);
       }
     }
 
@@ -54,14 +52,21 @@ const CreateSheet = ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ sheetName: SheetName, columns: formValues }),
+        body: JSON.stringify({
+          sheetName: formValues.shift(),
+          columns: formValues,
+        }),
       }).then((res) =>
         res.json().then((r) => {
           if (r.success) {
             toast.success("Create Successfully!");
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+            if (sheetData) {
+              const dummyData = [...sheetData];
+              dummyData.push(r.success);
+              dispatch(setSheetData(dummyData));
+            } else {
+              dispatch(setSheetData([r.success]));
+            }
             setIsLoading(false);
           } else {
             toast.error("something went Wrong");
@@ -69,8 +74,8 @@ const CreateSheet = ({
           }
         })
       );
-    } else if (headerId && headerData) {
-      fetch(apiUrl + "/create/columns/" + headerId, {
+    } else if (data) {
+      fetch(apiUrl + "/create/columns/" + data.id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -80,9 +85,11 @@ const CreateSheet = ({
         res.json().then((r) => {
           if (r.success) {
             toast.success("Create Successfully!");
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+            const dummyData = JSON.parse(JSON.stringify(data));
+            formValues.forEach((f) => {
+              dummyData.headerData.push(f);
+            });
+            dispatch(setTable(dummyData));
             setIsLoading(false);
           } else {
             toast.error("something went Wrong");

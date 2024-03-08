@@ -1,16 +1,18 @@
 import { apiUrl } from "@/constant";
 import Loader from "@/layout/Loader";
+import { setChart } from "@/state/slices/ChartSlice";
+import { RootState } from "@/state/store";
 import { Button, MenuItem, Select, TextField } from "@mui/material";
 import { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
-interface CreateChartProps {
-  id: number | undefined;
-  headerData: string[] | undefined;
-}
-
-const CreateChart = ({ id, headerData }: CreateChartProps) => {
+const CreateChart = () => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const data = useSelector((state: RootState) => state.table.data);
+  const charts = useSelector((state: RootState) => state.chart.data);
+  const dispatch = useDispatch();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,7 +35,7 @@ const CreateChart = ({ id, headerData }: CreateChartProps) => {
       }
     }
 
-    if (id) {
+    if (data) {
       setIsLoading(true);
 
       fetch(apiUrl + "/create/chart", {
@@ -42,7 +44,7 @@ const CreateChart = ({ id, headerData }: CreateChartProps) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          headerId: id,
+          headerId: data.id,
           field: formValues["field"],
           chartType: formValues["chartType"],
           chartName: formValues["chartName"],
@@ -51,9 +53,15 @@ const CreateChart = ({ id, headerData }: CreateChartProps) => {
         res.json().then((r) => {
           if (r.success) {
             toast.success("Create Successfully!");
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+
+            if (charts) {
+              const dummyData = [...charts];
+              dummyData.push(r.success);
+              dispatch(setChart(dummyData));
+            } else {
+              dispatch(setChart([r.success]));
+            }
+
             setIsLoading(false);
           } else {
             toast.error("something went Wrong");
@@ -107,7 +115,7 @@ const CreateChart = ({ id, headerData }: CreateChartProps) => {
               <MenuItem value={"sparkline"}>Sparkline Chart</MenuItem>
             </Select>
           </div>
-          {headerData && (
+          {data && (
             <div className="flex flex-col items-start justify-start gap-y-2 px-2 py-4">
               <label
                 htmlFor="field"
@@ -118,14 +126,14 @@ const CreateChart = ({ id, headerData }: CreateChartProps) => {
               <Select
                 labelId="field"
                 id="field"
-                defaultValue={headerData[0]}
+                defaultValue={data.headerData as string[]}
                 name="field"
                 label="field"
                 sx={{
                   width: "100%",
                 }}
               >
-                {headerData.map((h, index) => (
+                {data.headerData.map((h, index) => (
                   <MenuItem value={h} key={index} selected>
                     {h}
                   </MenuItem>

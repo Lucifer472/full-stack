@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import { setSheetData } from "@/state/slices/SheetDataSlice";
 
 import { Book } from "@mui/icons-material";
 import { Button } from "@mui/material";
@@ -11,50 +14,60 @@ import { apiUrl } from "@/constant";
 import PageTitle from "@/components/PageTitle";
 import SheetNameChange from "@/components/SheetNameChange";
 import CreateSheetButton from "@/components/CreateSheetButton";
+import Loader from "@/layout/Loader";
 
 const SheetPage = () => {
-  const [data, setData] = useState(null);
-  const [sheetId, setSheetId] = useState<null | number>(null);
+  const [sheetIndex, setSheetIndex] = useState<null | number>(null);
   const [editPopup, setEditPopup] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  const data = useSelector((state: RootState) => state.SheetData.data);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(true);
     fetch(apiUrl + "/fetch/sheets", {
       method: "GET",
     }).then((res) =>
       res.json().then((r) => {
         if (r.success) {
-          setData(r.success);
+          dispatch(setSheetData(r.success));
         } else {
           toast.error("Something Went Wrong!");
         }
+        setLoading(false);
       })
     );
-  }, []);
+  }, [dispatch]);
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: number, index: number) => {
     fetch(apiUrl + "/delete/sheet/" + id, {
       method: "DELETE",
     }).then((res) => {
-      if (res.status === 200) {
-        window.location.reload();
+      if (res.status === 200 && data) {
+        const newArray = [...data.slice(0, index), ...data.slice(index + 1)];
+        dispatch(setSheetData(newArray));
+        toast.success("Sheet Deleted Successfully");
       } else {
         toast.error("Something Went Wrong!");
       }
     });
   };
 
-  const handleRename = (id: number) => {
-    setSheetId(id);
+  const handleRename = (index: number) => {
+    setSheetIndex(index);
     setEditPopup(true);
   };
 
   return (
     <section className="global-container">
+      {loading && <Loader />}
       {editPopup && (
         <Popup setOpen={setEditPopup} title="Sheet Name Change">
-          <SheetNameChange sheetId={sheetId as number} />
+          <SheetNameChange sheetIndex={sheetIndex as number} />
         </Popup>
       )}
       <div className="flex flex-col gap-y-4 w-full">
@@ -65,8 +78,7 @@ const SheetPage = () => {
       </div>
       <div className="w-full bg-white p-4 rounded-md shadow border border-slate-100 mt-4 flex flex-col gap-y-1">
         {data &&
-          // @ts-expect-error map function
-          data.map((d) => (
+          data.map((d, index) => (
             <div
               className="flex items-center justify-between border-b border-slate-300 py-4"
               key={d.id}
@@ -89,7 +101,7 @@ const SheetPage = () => {
                 </h2>
               </div>
               <div className="flex items-center justify-end gap-x-2">
-                <Button variant="outlined" onClick={() => handleRename(d.id)}>
+                <Button variant="outlined" onClick={() => handleRename(index)}>
                   Rename
                 </Button>
                 <Button
@@ -100,7 +112,7 @@ const SheetPage = () => {
                       backgroundColor: "red",
                     },
                   }}
-                  onClick={() => handleDelete(d.id)}
+                  onClick={() => handleDelete(d.id, index)}
                 >
                   Delete
                 </Button>
@@ -111,6 +123,12 @@ const SheetPage = () => {
                   View
                 </Button>
               </div>
+            </div>
+          ))}
+        {!data ||
+          (data.length < 1 && (
+            <div className="flex items-center justify-center min-h-[300px]">
+              <h2 className="text-2xl font-medium">No Sheet Found!</h2>
             </div>
           ))}
       </div>

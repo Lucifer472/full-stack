@@ -1,13 +1,17 @@
 import { apiUrl } from "@/constant";
+import { setTable } from "@/state/slices/TableSlice";
 import { RootState } from "@/state/store";
 import { Button, TextField } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-const EditRow = ({ headerValue }: { headerValue: string[] }) => {
+const EditRow = () => {
   const row = useSelector((state: RootState) => state.rowSelect.row);
+  const data = useSelector((state: RootState) => state.table.data);
+  const dispatch = useDispatch();
+
   const [defaultValue, setDefaultValue] = useState<null | string[]>(null);
 
   useEffect(() => {
@@ -26,12 +30,16 @@ const EditRow = ({ headerValue }: { headerValue: string[] }) => {
     }
   }, [row]);
 
+  if (!data || !row) {
+    return;
+  }
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // @ts-expect-error elements
     const formElements = e.target.elements;
-    const formValues = [];
+    const formValues: string[] = [];
 
     // Loop through form elements and store their values in formValues object
     for (let i = 0; i < formElements.length; i++) {
@@ -40,8 +48,7 @@ const EditRow = ({ headerValue }: { headerValue: string[] }) => {
         formValues.push(element.value);
       }
     }
-    
-    // @ts-expect-error rows
+
     fetch(apiUrl + "/update/row/" + row[0], {
       method: "PUT",
       headers: {
@@ -50,16 +57,24 @@ const EditRow = ({ headerValue }: { headerValue: string[] }) => {
       body: JSON.stringify({ changedValue: formValues }),
     }).then((res) => {
       if (res.status === 200) {
-        window.location.reload();
+        const dummyData = { ...data };
+        dummyData.rows = dummyData.rows.map((r) => {
+          if (r.id === row[0]) {
+            return { ...r, values: formValues };
+          }
+
+          return r;
+        });
+        dispatch(setTable(dummyData));
       } else {
         toast.error("Something Went Wrong!");
       }
     });
   };
   return (
-    <form onSubmit={handleSubmit} className="mt-4 pb-6">
+    <form onSubmit={handleSubmit} className="mt-4 pb-6 overflow-y-scroll">
       {defaultValue &&
-        headerValue.map((h, index) => (
+        data.headerData.map((h, index) => (
           <div
             className="flex flex-col items-start justify-start gap-y-2 px-2 py-4"
             key={index}

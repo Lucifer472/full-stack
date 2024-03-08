@@ -1,6 +1,9 @@
 import toast from "react-hot-toast";
 import { apiUrl } from "@/constant";
 import { Close } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import { setChart } from "@/state/slices/ChartSlice";
 
 interface ChartWrapperProps {
   id: number;
@@ -9,13 +12,18 @@ interface ChartWrapperProps {
 }
 
 const ChartWrapper = ({ id, chartName, children }: ChartWrapperProps) => {
+  const charts = useSelector((state: RootState) => state.chart.data);
+  const dispatch = useDispatch();
+
   const handleDelete = () => {
     fetch(apiUrl + "/delete/chart/" + id, {
       method: "delete",
     }).then((res) =>
       res.json().then((r) => {
-        if (r.success) {
+        if (r.success && charts) {
           toast.success("Chart Remove Successfully");
+          const dummyData = charts.filter((obj) => obj.id !== id);
+          dispatch(setChart(dummyData));
         } else {
           toast.error("Something went wrong!");
         }

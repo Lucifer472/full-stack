@@ -1,29 +1,30 @@
-// ----------------------------------------------------------------------
-
+// @ts-expect-error Theme
 export function remToPx(value) {
   return Math.round(parseFloat(value) * 16);
 }
 
+// @ts-expect-error Theme
 export function pxToRem(value) {
   return `${value / 16}rem`;
 }
 
+// @ts-expect-error Theme
 export function responsiveFontSizes({ sm, md, lg }) {
   return {
-    '@media (min-width:600px)': {
+    "@media (min-width:600px)": {
       fontSize: pxToRem(sm),
     },
-    '@media (min-width:900px)': {
+    "@media (min-width:900px)": {
       fontSize: pxToRem(md),
     },
-    '@media (min-width:1200px)': {
+    "@media (min-width:1200px)": {
       fontSize: pxToRem(lg),
     },
   };
 }
 
-export const primaryFont = 'Public Sans, sans-serif';
-export const secondaryFont = 'Barlow, sans-serif';
+export const primaryFont = "Public Sans, sans-serif";
+export const secondaryFont = "Barlow, sans-serif";
 
 // ----------------------------------------------------------------------
 
@@ -96,12 +97,12 @@ export const typography = {
     fontWeight: 700,
     lineHeight: 1.5,
     fontSize: pxToRem(12),
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   button: {
     fontWeight: 700,
     lineHeight: 24 / 14,
     fontSize: pxToRem(14),
-    textTransform: 'unset',
+    textTransform: "unset",
   },
 };

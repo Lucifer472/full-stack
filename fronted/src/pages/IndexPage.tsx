@@ -23,9 +23,6 @@ const IndexPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Temp State Only Development
-  const [temp, setTemp] = useState(true);
-
   const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Handle file input change here
     if (event.target.files) {
@@ -36,7 +33,7 @@ const IndexPage = () => {
 
   useEffect(() => {
     const handleFileUpload = () => {
-      if (file && temp) {
+      if (file) {
         const formData = new FormData();
         formData.append("file", file);
         setLoading(true);
@@ -47,29 +44,24 @@ const IndexPage = () => {
           if (res.status === 200) {
             toast.success("File Uploaded Successfully");
             setLoading(false);
-            setTemp(false);
             res.json().then((res) => {
               navigate("/sheets/" + res.sheetId);
             });
           } else {
             toast.error("Something Went Wrong!");
             setLoading(false);
-            setTemp(false);
           }
         });
       }
     };
     handleFileUpload();
-  }, [file, temp]);
+  }, [file, navigate]);
 
   const handleDrop = (event: DragEvent) => {
     event.preventDefault();
 
     if (event.dataTransfer) {
       const droppedFiles = event.dataTransfer.files;
-      console.log(droppedFiles);
-
-      // Trigger the file input change event manually
       if (fileInputRef.current && droppedFiles.length > 0) {
         // @ts-expect-error File is Never
         fileInputRef.current.files = droppedFiles;
