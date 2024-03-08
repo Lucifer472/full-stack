@@ -55,6 +55,23 @@ export const addFields = async (values: object[], headerId: number) => {
   }
 };
 
+export const addRows = async (id: number, row: string[]) => {
+  try {
+    const data = await db.rows.create({
+      data: {
+        headerId: id,
+        values: row,
+      },
+    });
+
+    if (!data) return { error: "Something Went Wrong!" };
+
+    return { success: data };
+  } catch (error) {
+    return { error: "Something Went Wrong!" };
+  }
+};
+
 // Fetch Functions For Sheets & Employee
 export const fetchSheets = async () => {
   try {
@@ -90,6 +107,21 @@ export const fetchAllData = async (sheetsId: number) => {
 export const fetchRow = async (id: number) => {
   try {
     const data = await db.rows.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!data) return { error: null };
+    return { success: data };
+  } catch (error) {
+    return { error: null };
+  }
+};
+
+export const fetchHeader = async (id: number) => {
+  try {
+    const data = await db.header.findUnique({
       where: {
         id,
       },
@@ -161,5 +193,22 @@ export const updateRows = async (id: number, values: string) => {
     return { success: "Changes Saved Successfully!" };
   } catch (error) {
     return { error: "Something Went Wrong!" };
+  }
+};
+
+export const addColumns = async (id: number, headerData: string[]) => {
+  try {
+    await db.header.update({
+      where: {
+        id,
+      },
+      data: {
+        headerData,
+      },
+    });
+
+    return { success: "Header Updated!" };
+  } catch (error) {
+    return { error: "something went Wrong!" };
   }
 };

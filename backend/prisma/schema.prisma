@@ -24,6 +24,7 @@ model Sheets{
 model Header {
   id             Int   @id       @default(autoincrement())
   rows           Rows[]
+  chart          Chart[]
 
   headerData     Json
   sheetsId       Int     
@@ -34,6 +35,16 @@ model Header {
 model Rows {
   id         Int      @id @default(autoincrement())
   values     Json
+  headerId   Int 
+  header     Header @relation(fields: [headerId], references: [id],onDelete: Cascade)
+}
+
+model Chart {
+  id             Int   @id       @default(autoincrement())
+  chartName      String
+  chartType      String
+  data            Json
+
   headerId   Int 
   header     Header @relation(fields: [headerId], references: [id],onDelete: Cascade)
 }

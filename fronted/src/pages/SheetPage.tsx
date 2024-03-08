@@ -1,13 +1,22 @@
-import PageTitle from "@/components/PageTitle";
-import { apiUrl } from "@/constant";
-import { Book } from "@mui/icons-material";
-import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+import { Book } from "@mui/icons-material";
+import { Button } from "@mui/material";
+
+import Popup from "@/layout/Popup";
+import { apiUrl } from "@/constant";
+
+import PageTitle from "@/components/PageTitle";
+import SheetNameChange from "@/components/SheetNameChange";
+import CreateSheetButton from "@/components/CreateSheetButton";
+
 const SheetPage = () => {
   const [data, setData] = useState(null);
+  const [sheetId, setSheetId] = useState<null | number>(null);
+  const [editPopup, setEditPopup] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,10 +45,23 @@ const SheetPage = () => {
     });
   };
 
+  const handleRename = (id: number) => {
+    setSheetId(id);
+    setEditPopup(true);
+  };
+
   return (
     <section className="global-container">
+      {editPopup && (
+        <Popup setOpen={setEditPopup} title="Sheet Name Change">
+          <SheetNameChange sheetId={sheetId as number} />
+        </Popup>
+      )}
       <div className="flex flex-col gap-y-4 w-full">
-        <PageTitle title="All Available Sheets (.xlsx and .csv)" />
+        <PageTitle
+          title="All Available Sheets (.xlsx and .csv)"
+          blocks={<CreateSheetButton />}
+        />
       </div>
       <div className="w-full bg-white p-4 rounded-md shadow border border-slate-100 mt-4 flex flex-col gap-y-1">
         {data &&
@@ -67,7 +89,9 @@ const SheetPage = () => {
                 </h2>
               </div>
               <div className="flex items-center justify-end gap-x-2">
-                <Button variant="outlined">Rename</Button>
+                <Button variant="outlined" onClick={() => handleRename(d.id)}>
+                  Rename
+                </Button>
                 <Button
                   variant="contained"
                   sx={{

@@ -40,11 +40,7 @@ const EditRow = ({ headerValue }: { headerValue: string[] }) => {
         formValues.push(element.value);
       }
     }
-
-    const formData = new FormData();
-    // @ts-expect-error formvalues
-    formData.append("changedValue", formValues);
-
+    
     // @ts-expect-error rows
     fetch(apiUrl + "/update/row/" + row[0], {
       method: "PUT",

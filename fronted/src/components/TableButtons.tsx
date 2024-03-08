@@ -6,21 +6,25 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import EditRow from "./EditRow";
+import CreateChart from "./CreateChart";
 
 interface TableButtonsProps {
   change: number;
   setChange: (v: number) => void;
   headerValue: string[];
+  sheetId: number | undefined;
 }
 
 const TableButtons = ({
   change,
   setChange,
   headerValue,
+  sheetId,
 }: TableButtonsProps) => {
   const rows = useSelector((state: RootState) => state.rowSelect.row);
   const [loading, setLoading] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [chart, setChart] = useState(false);
 
   const handleRowDelete = async () => {
     if (rows && rows.length > 0) {
@@ -52,6 +56,11 @@ const TableButtons = ({
           <EditRow headerValue={headerValue} />
         </Popup>
       )}
+      {chart && (
+        <Popup setOpen={setChart} title="Create A Chart">
+          <CreateChart id={sheetId} headerData={headerValue} />
+        </Popup>
+      )}
       <Button
         variant="contained"
         sx={{
@@ -72,7 +81,9 @@ const TableButtons = ({
       >
         Edit
       </Button>
-      <Button variant="contained">Create Chart</Button>
+      <Button variant="contained" onClick={() => setChart(true)}>
+        Create Chart
+      </Button>
     </div>
   );
 };

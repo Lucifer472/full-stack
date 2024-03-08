@@ -8,6 +8,7 @@ import uploadRoutes from "./routes/upload/route";
 import fetchRoute from "./routes/fetch/route";
 import deleteRoute from "./routes/delete/route";
 import updateRoute from "./routes/update/route";
+import createRoute from "./routes/create/route";
 
 // DOT ENV CONFIG
 dotenv.config();
@@ -28,6 +29,7 @@ app.use("/api/upload", uploadRoutes); // Use the routes for Uploading
 app.use("/api/fetch", fetchRoute); // Use the Route for Fetching
 app.use("/api/delete", deleteRoute); // Use the Route for Deleting
 app.use("/api/update", updateRoute); // Use the Route for Updating
+app.use("/api/create", createRoute); // Use the Route for Updating
 
 // RUNNING APP
 app.listen(PORT, () => {
