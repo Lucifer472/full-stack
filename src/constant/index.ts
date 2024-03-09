@@ -1,6 +1,6 @@
 // Api Route URL
 export const apiUrl =
-  "https://full-stack-project-hardik-backend.netlify.app/api";
+  "https://full-stack-da2468nrr-lucifer472s-projects.vercel.app/api";
 
 // Upload Notes
 export const UploadNotes = [
