@@ -5,7 +5,7 @@
   "main": "index.ts",
   "type": "commonjs",
   "scripts": {
-    "start": "node index.ts"
+    "start": "npx prisma generate && node index.ts"
   },
   "keywords": [],
   "author": "",
