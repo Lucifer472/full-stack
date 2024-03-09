@@ -6,7 +6,8 @@
   "type": "commonjs",
   "scripts": {
     "postinstall": "prisma generate",
-    "start": "npx prisma generate && node index.ts"
+    "build": "prisma generate",
+    "start": "node index.ts"
   },
   "keywords": [],
   "author": "",
