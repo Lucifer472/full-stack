@@ -24,9 +24,8 @@ const allowCors = (fn: any) => async (req: any, res: any) => {
 };
 
 // Creating Sheet Route
-router.post(
-  "/sheet",
-  async (req, res) => await createSheetsAndEmployee(req, res)
+router.post("/sheet", async (req, res) =>
+  allowCors(await createSheetsAndEmployee(req, res))
 );
 
-export default allowCors(router);
+export default router;
