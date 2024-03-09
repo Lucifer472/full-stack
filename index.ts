@@ -17,7 +17,6 @@ dotenv.config();
 const corsOptions = {
   origin: "*",
 };
-
 // APP & MIDDLEWARE
 const app = express();
 const PORT = process.env.PORT || 8800;
