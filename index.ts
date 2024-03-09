@@ -15,7 +15,7 @@ dotenv.config();
 
 // CORS Options
 const corsOptions = {
-  origin: "*",
+  origin: "https://full-stack-project-hardik.netlify.app/",
 };
 // APP & MIDDLEWARE
 const app = express();
