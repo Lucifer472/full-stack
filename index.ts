@@ -15,7 +15,7 @@ dotenv.config();
 
 // CORS Options
 const corsOptions = {
-  origin: "https://full-stack-project-hardik.netlify.app/",
+  origin: "https://full-stack-project-hardik.netlify.app",
 };
 // APP & MIDDLEWARE
 const app = express();
@@ -28,7 +28,10 @@ app.use(bodyParser.json());
 // CORS Middleware adapted for Express.js
 const allowCors = (req: any, res: any, next: any) => {
   res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://full-stack-project-hardik.netlify.app"
+  );
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET,OPTIONS,PATCH,DELETE,POST,PUT"
