@@ -1,6 +1,6 @@
 // Api Route URL
 export const apiUrl =
-  "https://full-stack-da2468nrr-lucifer472s-projects.vercel.app/api";
+  "https://full-stack-io0arz7e4-lucifer472s-projects.vercel.app/api";
 
 // Upload Notes
 export const UploadNotes = [
