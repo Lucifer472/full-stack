@@ -5,6 +5,7 @@
   "main": "index.ts",
   "type": "commonjs",
   "scripts": {
+    "postinstall": "prisma generate",
     "start": "npx prisma generate && node index.ts"
   },
   "keywords": [],
