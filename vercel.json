@@ -2,7 +2,7 @@
   "version": 2,
   "env": {
     "DATABASE_URL": "postgresql://Lucifer472:T6xUXQYrmt7O@ep-steep-king-a1kj6qhi.ap-southeast-1.aws.neon.tech/Employee?sslmode=require",
-    "PORT": 8800
+    "PORT": "8800"
   },
   "builds": [
     {
