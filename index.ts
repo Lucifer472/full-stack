@@ -16,7 +16,6 @@ dotenv.config();
 // CORS Options
 const corsOptions = {
   origin: "*",
-  optionsSuccessStatus: 200,
 };
 
 // APP & MIDDLEWARE
