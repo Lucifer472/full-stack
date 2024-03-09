@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Sheet
+model Sheets{
+  id    Int   @id     @default(autoincrement())
+  sheetName   String
+  header Header[]
+}
+
+// Header of the Sheet
+model Header {
+  id             Int   @id       @default(autoincrement())
+  rows           Rows[]
+  chart          Chart[]
+
+  headerData     Json
+  sheetsId       Int     
+  sheets         Sheets    @relation(fields: [sheetsId],references: [id],onDelete:  Cascade)
+}
+
+// Rows of The Shhet
+model Rows {
+  id         Int      @id @default(autoincrement())
+  values     Json
+  headerId   Int 
+  header     Header @relation(fields: [headerId], references: [id],onDelete: Cascade)
+}
+
+model Chart {
+  id             Int   @id       @default(autoincrement())
+  chartName      String
+  chartType      String
+  data            Json
+
+  headerId   Int 
+  header     Header @relation(fields: [headerId], references: [id],onDelete: Cascade)
+}
