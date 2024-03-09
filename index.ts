@@ -25,6 +25,28 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
+// CORS Middleware adapted for Express.js
+const allowCors = (req: any, res: any, next: any) => {
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+  } else {
+    next();
+  }
+};
+
+// Apply the CORS middleware globally
+app.use(allowCors);
+
 // Routes
 app.use("/api/upload", uploadRoutes); // Use the routes for Uploading
 app.use("/api/fetch", fetchRoute); // Use the Route for Fetching
