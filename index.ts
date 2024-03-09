@@ -14,7 +14,9 @@ import createRoute from "./routes/create/route";
 dotenv.config();
 
 // CORS Options
-const corsOptions = {};
+const corsOptions = {
+  origin: "https://full-stack-project-hardik.netlify.app",
+};
 
 // APP & MIDDLEWARE
 const app = express();
