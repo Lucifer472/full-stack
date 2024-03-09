@@ -11,7 +11,10 @@ import updateRoute from "./routes/update/route";
 import createRoute from "./routes/create/route";
 
 // DOT ENV CONFIG
-dotenv.config();
+// CORS Options
+const corsOptions = {
+  origin: "https://full-stack-project-hardik.netlify.app",
+};
 
 // CORS Options
 const corsOptions = {};

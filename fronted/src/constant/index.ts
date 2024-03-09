@@ -1,5 +1,5 @@
 // Api Route URL
-export const apiUrl = "http://localhost:8800/api";
+export const apiUrl = "https://full-stack-neon.vercel.app/api";
 
 // Upload Notes
 export const UploadNotes = [
