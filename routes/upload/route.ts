@@ -3,6 +3,25 @@ import express from "express";
 import { createSheetsAndEmployee } from "./functions/create-sheet";
 
 const router = express.Router();
+const allowCors = (fn: any) => async (req: any, res: any) => {
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  // another common pattern
+  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+  return await fn(req, res);
+};
 
 // Creating Sheet Route
 router.post(
@@ -10,4 +29,4 @@ router.post(
   async (req, res) => await createSheetsAndEmployee(req, res)
 );
 
-export default router;
+export default allowCors(router);
